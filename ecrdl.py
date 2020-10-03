@@ -26,16 +26,12 @@ def saveimg(year, month, day, hour, minute):
     if r.is_error:
         print('=====FAILED=====')
         return 
-    #with open(str(r.url), 'w') as f:
     fn ="".join([c for c in str(r.url) if re.match(r'\w', c)])
     GIFDIR.mkdir(exist_ok=True)
     fp = GIFDIR.joinpath(fn)
     with open(fp, 'wb') as f:
         im = Image.open(BytesIO(r.content))
         im.save(f , 'GIF')
-
-#@click.option('--res', type=click.Choice(['10'], case_sensitive=False))
-#@click.option('--loc', type=click.Choice(['ON'], case_sensitive=False))
 
 @click.command()
 @click.option('--sdate', help='start date')
