@@ -18,7 +18,7 @@ python -m pip install -r requirements.txt
 
 specify start and end dates
 ~~~
-python ecrdl.py --sdate '2020-01-01' --edate '2020-01-01' > ecrdl.log 2>error_ecrdl.log &
+python ecrdl.py --sdate '2020-01-01' --edate '2020-01-01' > ecrdl.log 2>&1 &
 ~~~
 
 ## Requirements
