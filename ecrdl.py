@@ -42,7 +42,7 @@ def saveimg(year, month, day, hour, minute):
         try:
             im = Image.open(BytesIO(r.content))
             im.save(f , 'GIF')
-        except PIL.UnidentifiedImageError:
+        except UnidentifiedImageError:
             try:
                 subprocess.run(["wget", r.url], capture_output=True)
                 return
