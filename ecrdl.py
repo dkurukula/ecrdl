@@ -8,7 +8,7 @@ import re
 from io import BytesIO
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 import click 
 import httpx
 
@@ -39,8 +39,15 @@ def saveimg(year, month, day, hour, minute):
     GIFDIR.mkdir(exist_ok=True)
     fp = GIFDIR.joinpath(fn)
     with open(fp, 'wb') as f:
-        im = Image.open(BytesIO(r.content))
-        im.save(f , 'GIF')
+        try:
+            im = Image.open(BytesIO(r.content))
+            im.save(f , 'GIF')
+        except PIL.UnidentifiedImageError:
+            try:
+                subprocess.run(["wget", r.url], capture_output=True)
+                return
+            except:
+                print('=====skipping, FAILED=====')
 
 @click.command()
 @click.option('--sdate', help='start date')
