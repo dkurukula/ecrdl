@@ -17,6 +17,9 @@ def dates10m(sdate,edate):
     dt = pd.date_range(sdate,edate, freq='10min')
     return dt
 
+def parser(URL):
+    return "".join([c for c in str(URL) if re.match(r'\w', c)])
+
 def saveimg(year, month, day, hour, minute):
     time = f'{year:02d}{month:02d}{day:02d}{hour:02d}{minute:02d}'
     params = {'time':time, 'site':'CASKR', 'image_type':'PRECIPET_RAIN_WEATHEROFFICE'}
@@ -26,7 +29,10 @@ def saveimg(year, month, day, hour, minute):
     if r.is_error:
         print('=====FAILED=====')
         return 
-    fn ="".join([c for c in str(r.url) if re.match(r'\w', c)])
+    if checklocal(r.url, parser):
+        print('---skipping, exists---')
+        return
+    fn = parser(r.url)
     GIFDIR.mkdir(exist_ok=True)
     fp = GIFDIR.joinpath(fn)
     with open(fp, 'wb') as f:
