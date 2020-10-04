@@ -1,6 +1,8 @@
 """
 CLI utility to download radar images from Environment Canada
 """
+from tracklocal import checklocal 
+
 import pandas as pd
 import re
 from io import BytesIO
@@ -9,6 +11,7 @@ from pathlib import Path
 from PIL import Image
 import click 
 import httpx
+
 
 PWD = Path(__file__).parent.resolve()
 GIFDIR = PWD.joinpath('gifs')
