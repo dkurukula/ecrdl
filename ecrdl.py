@@ -39,19 +39,20 @@ def saveimg(year, month, day, hour, minute):
     if r.is_error:
         print('=====FAILED=====')
         return 
-    fn = parser(r.url)
+    fn = parser(furl)
     GIFDIR.mkdir(exist_ok=True)
     fp = GIFDIR.joinpath(fn)
     with open(fp, 'wb') as f:
         try:
             im = Image.open(BytesIO(r.content))
             im.save(f , 'GIF')
-        except UnidentifiedImageError:
+        except (UnidentifiedImageError, httpx.ReadTimeout):
             try:
-                subprocess.run(["wget", r.url], capture_output=True)
-                return
+                subprocess.run(["wget", furl], capture_output=True)
             except:
                 print('=====skipping, FAILED=====')
+        except:
+            print('=====skipping, FAILED=====')
 
 @click.command()
 @click.option('--sdate', help='start date')
