@@ -35,15 +35,12 @@ def saveimg(year, month, day, hour, minute):
     if checklocal(furl, parser):
         print('---skipping, exists---')
         return
-    r = httpx.get(URL, params=params)
-    if r.is_error:
-        print('=====FAILED=====')
-        return 
-    fn = parser(furl)
     GIFDIR.mkdir(exist_ok=True)
     fp = GIFDIR.joinpath(fn)
     with open(fp, 'wb') as f:
         try:
+            r = httpx.get(URL, params=params)
+            fn = parser(furl)
             im = Image.open(BytesIO(r.content))
             im.save(f , 'GIF')
         except (UnidentifiedImageError, httpx.ReadTimeout):
